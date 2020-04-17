@@ -37,7 +37,7 @@ public class DataLogDAOlmpl<T> implements DataLogDAO<T>
 		} 
 		catch(Exception e)
 		{
-			errorMap.put("Insert Error", "Error Thrown -> "+e.getCause().getCause().getMessage());
+			errorMap.put("Fetch Error", "Error Thrown -> "+e.getCause().getCause().getMessage());
 			return  (Container<T>) new Container<Map<String, Object>>(errorMap,"Error Object");			
 			
 		}
