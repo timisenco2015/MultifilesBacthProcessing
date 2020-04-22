@@ -1,4 +1,4 @@
-# com.openHouse.BackendAPIs
+# MultifilesBacthProcessing
 
 Developed this project to display my full knowdlege of API development in spring boot. Batch files pocessing experience that reads data log files from users at every five minutes.  These files are processed in batches of 100 chunks. The log data read from these files are stored  on MongoDB. This project is also well tested.
 
