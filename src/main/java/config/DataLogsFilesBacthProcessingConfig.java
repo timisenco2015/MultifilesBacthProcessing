@@ -4,12 +4,12 @@ package config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
-import org.springframework.dao.DeadlockLoserDataAccessException;
-
 import batch.CustomItemReader;
 import batch.DataLogDetailsProcessor;
 import batch.MongoCustomWriter;
 import dto.DataLogDetails;
+import listener.ReaderListener;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -51,6 +51,14 @@ public class DataLogsFilesBacthProcessingConfig<T>
 		
 	}
 	
+	@Bean
+	@StepScope
+	public ReaderListener readerListener() throws Exception
+	{
+		
+		return new ReaderListener();
+	}
+	
 	
 	
 	// create bean for DataLogDetailsProcess class. The class is used for transforming data read from file.
@@ -74,12 +82,10 @@ public class DataLogsFilesBacthProcessingConfig<T>
 		
 		Step step = stepBuilderFactory.get("readDataLogJSONFiles")
 					.<DataLogDetails, DataLogDetails>chunk(100)
+					.listener(readerListener())
 					.reader(customItemReader())
 					.processor(dataLogDetailsProcessor())
 					.writer(mongoCustomWriter)
-					.faultTolerant()
-					.retryLimit(3)
-					.retry(DeadlockLoserDataAccessException.class)
 					.build();
 		
 		return jobBuilderFactory.get("readDataLogJSONFiless")

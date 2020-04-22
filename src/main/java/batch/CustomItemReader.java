@@ -9,21 +9,24 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.support.IteratorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import daoImp.DatabaseSequenceDAOImpl;
+import domain.Container;
 import dto.DataLogDetails;
+
+
 
 //Custom ItemReader Class
 public class CustomItemReader<T> implements ItemReader<DataLogDetails> 
 {
 
-	
 	Resource resource;
 
 	private ItemReader<DataLogDetails> delegate;
+	
+	Container<T> genericObject=null; 
 
 
 	@Autowired
@@ -48,33 +51,17 @@ public class CustomItemReader<T> implements ItemReader<DataLogDetails>
 	 
 	 
 	 // reads data from the file and parsed to JSONObject
-	 private List<DataLogDetails> dataLogDetails() throws FileNotFoundException, org.json.simple.parser.ParseException 
+	 private List<DataLogDetails> dataLogDetails() throws FileNotFoundException, IOException, org.json.simple.parser.ParseException 
 	 {
 		 List<DataLogDetails> dataLogDetailsList = new ArrayList<>();
-			
-		 	try (FileReader reader = new FileReader(resource.getFile()))
-	        {
-		 		JSONParser parser = new JSONParser();
+		
+		 	FileReader reader = new FileReader(resource.getFile());
+	        
+		 	JSONParser parser = new JSONParser();
 		 		
-	            JSONObject dataLogDetailsObject = (JSONObject) parser.parse(reader);
+	        JSONObject dataLogDetailsObject = (JSONObject) parser.parse(reader);
 	          
-	            dataLogDetailsList.add(parseDataLogDetailsObject(dataLogDetailsObject));
-	 
-	        } 
-		 	catch (FileNotFoundException e) 
-		 	{
-	            e.printStackTrace();
-	            
-	        } 
-		 	catch (IOException e) 
-		 	{
-	            e.printStackTrace();
-	            
-	        } 
-		 	catch (ParseException e) 
-		 	{
-	            e.printStackTrace();
-	        }
+	        dataLogDetailsList.add(parseDataLogDetailsObject(dataLogDetailsObject));
 		
 		 	return dataLogDetailsList;
 		

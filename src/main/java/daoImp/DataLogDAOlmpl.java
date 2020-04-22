@@ -1,15 +1,16 @@
 package daoImp;
 
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import com.openHouse.BackendAPIs.Application;
 import dao.DataLogDAO;
 import domain.Container;
 import dto.DataLogDetails;
+import exception.RestExceptionHandler;
 import repo.DataLogRepo;
 
 
@@ -21,24 +22,32 @@ public class DataLogDAOlmpl<T> implements DataLogDAO<T>
 	@Autowired
 	DataLogRepo dataLogRepo;
 	
+	RestExceptionHandler restExceptionHandler=new RestExceptionHandler();
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Container<T> getDataLogDetailsByUserId(String userId)
 	{
-		
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
-
+	
 		try 
 		{
 			List<DataLogDetails> dataLogDetailsList= dataLogRepo.findDataLogDetailsByUserId(userId);
 			
 			return  (Container<T>) new Container<List<DataLogDetails>>(dataLogDetailsList,"Class Object");
 		} 
-		catch(Exception e)
+		catch (DataAccessException dataAccessException) 
 		{
-			errorMap.put("Fetch Error", "Error Thrown -> "+e.getCause().getCause().getMessage());
-			return  (Container<T>) new Container<Map<String, Object>>(errorMap,"Error Object");			
+			 Application.getLogger().info("getDataLogDetailsByUserId method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			 return (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleDataAccessException(dataAccessException),"Error Object");
+	
+		 }
+		catch(Exception exception)
+		{
+			 
+			 Application.getLogger().info("getDataLogDetailsByUserId method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			return  (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleMethodGeneralException(exception),"Error Object");
 			
 		}
 	}
@@ -46,22 +55,29 @@ public class DataLogDAOlmpl<T> implements DataLogDAO<T>
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Container<T> getDataLogDetailsByLogDateRange(String startDate, String endDate)
+	public Container<T> getDataLogDetailsByLogDateRange(String startDate, String endDate) throws DataAccessException
 	{
 		
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
-		
+	
 		try 
 		{
 			List<DataLogDetails> dataLogDetailsList= dataLogRepo.findDataLogDetailsByLogDateRange(startDate, endDate);
 			
 			return  (Container<T>) new Container<List<DataLogDetails>>(dataLogDetailsList,"Class Object");
 		} 
-		catch(Exception e)
+		catch (DataAccessException dataAccessException) 
 		{
-			errorMap.put("Insert Error", "Error Thrown -> "+e.getCause().getCause().getMessage());
-			return  (Container<T>) new Container<Map<String, Object>>(errorMap,"Error Object");			
+			 Application.getLogger().info("getDataLogDetailsByLogDateRange method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			 return (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleDataAccessException(dataAccessException),"Error Object");
+	
+		 }
+		catch(Exception exception)
+		{
+			 
+			 Application.getLogger().info("getDataLogDetailsByLogDateRange method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			return  (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleMethodGeneralException(exception),"Error Object");
 			
 		}
 	}
@@ -70,8 +86,6 @@ public class DataLogDAOlmpl<T> implements DataLogDAO<T>
 	@Override
 	public Container<T> getDataLogDetailsByLogType(String logType)
 	{
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
 		
 		try 
 		{
@@ -79,11 +93,20 @@ public class DataLogDAOlmpl<T> implements DataLogDAO<T>
 			
 			return  (Container<T>) new Container<List<DataLogDetails>>(dataLogDetailsList,"Class Object");
 		} 
-		catch(Exception e)
+		catch (DataAccessException dataAccessException) 
 		{
-			errorMap.put("Insert Error", "Error Thrown -> "+e.getCause().getCause().getMessage());
-			
-			return  (Container<T>) new Container<Map<String, Object>>(errorMap,"Error Object");			
+			 Application.getLogger().info("getDataLogDetailsByLogType method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			 return (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleDataAccessException(dataAccessException),"Error Object");
+	
+		 
+		 }
+		catch(Exception exception)
+		{
+			 
+			 Application.getLogger().info("getDataLogDetailsByLogType method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			return  (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleMethodGeneralException(exception),"Error Object");
 			
 		}
 	}
@@ -93,19 +116,26 @@ public class DataLogDAOlmpl<T> implements DataLogDAO<T>
 	public Container<T> getDataLogDetailsByLogDateRangeAndUserId(String startDate, String endDate,String userId)
 	{
 		
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
 		try 
 		{
 			List<DataLogDetails> dataLogDetailsList= dataLogRepo.findDataLogDetailsByLogDateRangeAndUserId(startDate,endDate,userId);
 			
 			return (Container<T>) new Container<List<DataLogDetails>>(dataLogDetailsList,"Class Object");
 		} 
-		catch(Exception e)
+		catch (DataAccessException dataAccessException) 
 		{
-			errorMap.put("Insert Error", "Error Thrown -> "+e.getCause().getCause().getMessage());
-			
-			return  (Container<T>) new Container<Map<String, Object>>(errorMap,"Error Object");			
+			 Application.getLogger().info("getDataLogDetailsByLogDateRangeAndUserId method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			 return (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleDataAccessException(dataAccessException),"Error Object");
+	
+		 
+		 }
+		catch(Exception exception)
+		{
+			 
+			 Application.getLogger().info("getDataLogDetailsByLogDateRangeAndUserId method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			return  (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleMethodGeneralException(exception),"Error Object");
 			
 		}
 	
@@ -116,20 +146,28 @@ public class DataLogDAOlmpl<T> implements DataLogDAO<T>
 	public Container<T> getDataLogDetailsByUserIdAndLogType(String logType,String userId )
 	{
 		
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
 		try 
 		{
 			List<DataLogDetails> dataLogDetailsList= dataLogRepo.findDataLogDetailsByUserIdAndLogType(logType,userId );
 			
 			return (Container<T>) new Container<List<DataLogDetails>>(dataLogDetailsList,"Class Object");
 		} 
-		catch(Exception e)
+		catch (DataAccessException dataAccessException) 
 		{
-			errorMap.put("Insert Error", "Error Thrown -> "+e.getCause().getCause().getMessage());
-			return (Container<T>) new Container<Map<String, Object>>(errorMap,"Error Object");			
+			 Application.getLogger().info("getDataLogDetailsByUserIdAndLogType method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			 return (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleDataAccessException(dataAccessException),"Error Object");
+	
+		 
+		 }
+		catch(Exception exception)
+		{
+			 
+			 Application.getLogger().info("getDataLogDetailsByUserIdAndLogType method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			return  (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleMethodGeneralException(exception),"Error Object");
 			
-		}  
+		}
 	
 	}
 	
@@ -138,20 +176,27 @@ public class DataLogDAOlmpl<T> implements DataLogDAO<T>
 	public Container<T> getDataLogDetailsByLogDateRangeAndLogType(String startDate, String endDate,String logType)
 	{
 		
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
 		try 
 		{
 			List<DataLogDetails> dataLogDetailsList= dataLogRepo.findDataLogDetailsByLogDateRangeAndLogType(startDate, endDate,logType);
 			return (Container<T>) new Container<List<DataLogDetails>>(dataLogDetailsList,"Class Object");
 		} 
-		catch(Exception e)
+		catch (DataAccessException dataAccessException) 
 		{
-			errorMap.put("Insert Error", "Error Thrown -> "+e.getCause().getCause().getMessage());
+			 Application.getLogger().info("getDataLogDetailsByLogDateRangeAndLogType method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			 return (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleDataAccessException(dataAccessException),"Error Object");
+	
+		 
+		 }
+		catch(Exception exception)
+		{
+			 
+			 Application.getLogger().info("getDataLogDetailsByLogDateRangeAndLogType method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			return  (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleMethodGeneralException(exception),"Error Object");
 			
-			return (Container<T>) new Container<Map<String, Object>>(errorMap,"Error Object");			
-			
-		}  
+		} 
 	
 	} 
 	
@@ -160,18 +205,26 @@ public class DataLogDAOlmpl<T> implements DataLogDAO<T>
 	public Container<T> getDataLogDetailsByLogDateRangeAndLogTypeAndUserId(String startDate, String endDate,String logType,String userId)
 	{
 		
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
-		
+	
 		try 
 		{
 			List<DataLogDetails> dataLogDetailsList= dataLogRepo.findDataLogDetailsByLogDateRangeAndLogTypeAndUserId(startDate, endDate,logType,userId);
 			return (Container<T>) new Container<List<DataLogDetails>>(dataLogDetailsList,"Class Object");
 		} 
-		catch(Exception e)
+		catch (DataAccessException dataAccessException) 
 		{
-			errorMap.put("Insert Error", "Error Thrown -> "+e.getCause().getCause().getMessage());
-			return (Container<T>) new Container<Map<String, Object>>(errorMap,"Error Object");			
+			 Application.getLogger().info("getDataLogDetailsByLogDateRangeAndLogTypeAndUserId method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			 return (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleDataAccessException(dataAccessException),"Error Object");
+	
+		 
+		 }
+		catch(Exception exception)
+		{
+			 
+			 Application.getLogger().info("getDataLogDetailsByLogDateRangeAndLogTypeAndUserId method in DataLog DAO Implementation. At this point there is an error that has prevented getting data log details");
+			 
+			return  (Container<T>) new  Container<ResponseEntity<Object>> (restExceptionHandler.handleMethodGeneralException(exception),"Error Object");
 			
 		}  
 	

@@ -25,7 +25,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @ComponentScan(basePackages=
 	{
-			"com.openHouse.BackendAPIs","controller","dao","daoImp","domain","dto","repo","service","serviceImp","config","job","batch"
+			"com.openHouse.BackendAPIs","controller","dao","daoImp","domain","dto","repo","service","serviceImp","config","job","batch","error","exception","listener"
 	})
 
 @EntityScan(basePackageClasses = 
